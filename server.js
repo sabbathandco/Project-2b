@@ -58,7 +58,7 @@ app.post('/generate-image', async (req, res) => {
       quality: "standard" // Can be "standard" or "hd" for high detail
     });
     // Extract the URL of the generated image
-    const imageUrl = imageResponse.data[0].url;
+    const imageUrl = imageResponse.data.data[0].url;
     res.json({ imageUrl: imageUrl });
   } catch (error) {
     console.error('Failed to generate DALL-E image:', error);
