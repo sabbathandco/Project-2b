@@ -1,0 +1,17 @@
+{
+  "name": "dragon-fruit-comics",
+  "version": "1.0.0",
+  "description": "Dragon Fruit Comics Interaction with OpenAI",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^8.6.0",
+    "express": "^4.18.2",
+    "openai": "^3.3.0"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}

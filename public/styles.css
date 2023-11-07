@@ -1,0 +1,40 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  header {
+    background-color: #f8d7da;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  main {
+    padding: 20px;
+  }
+  
+  h1 {
+    margin: 0;
+    color: #721c24;
+  }
+  
+  h2 {
+    color: #721c24;
+  }
+  
+  .comic-panel {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  
+  .panel {
+    border: 2px solid #721c24;
+    padding: 20px;
+    text-align: center;
+  }
+  .dialogue {
+    margin-top: 10px;
+    font-style: italic;
+}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragon Fruit Comics</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Dragon Fruit Comics</h1>
+        <p>Collaborate to Create 3 Panel Stories</p>
+    </header>
+    <main>
+        <section>
+            <h2>Start or Finish a Story</h2>
+            <div class="comic-panel">
+                <div class="panel" id="beginning">
+                    <p>Beginning: It all started when...</p>
+                    <input type="text" id="userInput" placeholder="Your story begins...">
+                    <button onclick="generateDialogue('beginning')">Generate</button>
+                </div>
+                <div class="panel-image" id="beginning-image"></div>
+</div>
+<div class="panel" id="middle">
+                <div class="panel" id="middle">
+                    <p>Middle: Then, something happened...</p>
+                    <input type="text" id="middleInput" placeholder="The story continues...">
+                    <button onclick="generateDialogue('middle')">Continue</button>
+                </div>
+                <div class="panel-image" id="middle-image"></div>
+            </div>
+            <div class="panel" id="end">
+                <div class="panel" id="end">
+                    <p>End: After ____, they lived happily ever after.</p>
+                    <input type="text" id="endInput" placeholder="The story concludes...">
+                    <button onclick="generateDialogue('end')">Finish</button>
+                </div>
+                <div class="panel-image" id="end-image"></div>
+            </div>
+            </div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
+.panel-image {
+    margin-top: 10px;
+}
+
+.panel-image img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd; /* Optional: add a border around the image */
+}
