@@ -6,9 +6,7 @@ async function generateAndDisplayImage(panelId, dialogue) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                dialogue: dialogue
-            }),
+            body: JSON.stringify({ dialogue }),
         });
 
         if (!response.ok) {
@@ -17,15 +15,15 @@ async function generateAndDisplayImage(panelId, dialogue) {
 
         const data = await response.json();
         const imageElement = document.getElementById(`${panelId}-image`);
-        // Suppose the response contains a URL to the image
-        imageElement.innerHTML = `<img src="${data.imageUrl}" alt="Generated Image for ${panelId}"/>`;
+        // Displaying the image on the webpage
+        imageElement.innerHTML = `<img src="${data.imageUrl}" alt="Generated Image for ${panelId}" />`;
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
     }
 }
+
 // Function to generate dialogue for a comic panel
 async function generateDialogue(panelId) {
-    // Obtain the user input for each panel
     let userInput;
     if (panelId === 'beginning') {
         userInput = document.getElementById('userInput').value;
@@ -37,7 +35,6 @@ async function generateDialogue(panelId) {
 
     const panel = document.getElementById(panelId);
 
-    // Collect previous dialogues if necessary
     let previousDialogues = {};
     if (panelId === 'middle') {
         previousDialogues.beginningDialogue = document.getElementById('userInput').value;
@@ -45,7 +42,7 @@ async function generateDialogue(panelId) {
         previousDialogues.beginningDialogue = document.getElementById('userInput').value;
         previousDialogues.middleDialogue = document.getElementById('middleInput').value;
     }
-  
+
     try {
         const response = await fetch('/create-dialogue', {
             method: 'POST',
@@ -55,17 +52,15 @@ async function generateDialogue(panelId) {
             body: JSON.stringify({
                 panel: panelId,
                 content: userInput,
-                ...previousDialogues,
+                ...previousDialogues
             }),
         });
-    
+
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-    
+        
         const data = await response.json();
-
-        // Update the panel's content correctly
         const dialogueElement = panel.querySelector('.dialogue');
         if (dialogueElement) {
             dialogueElement.textContent = data.dialogue;
@@ -75,7 +70,10 @@ async function generateDialogue(panelId) {
             newDialogue.textContent = data.dialogue;
             panel.appendChild(newDialogue);
         }
+
+        // When the dialogue has been generated, generate the corresponding image
+        generateAndDisplayImage(panelId, data.dialogue);
     } catch (error) {
-        console.error('There has been a problem with your fetch operation:', error);
+        console.error('There was a problem with your fetch operation:', error);
     }
 }
