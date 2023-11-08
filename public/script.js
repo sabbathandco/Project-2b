@@ -24,24 +24,19 @@ async function generateAndDisplayImage(panelId, dialogue) {
 
 // Function to generate dialogue for a comic panel
 async function generateDialogue(panelId) {
-    let userInput;
-    if (panelId === 'beginning') {
-        userInput = document.getElementById('userInput').value;
-    } else if (panelId === 'middle') {
-        userInput = document.getElementById('middleInput').value;
-    } else if (panelId === 'end') {
-        userInput = document.getElementById('endInput').value;
+    const inputElement = document.querySelector(`#${panelId} input`);
+    const userInput = inputElement ? inputElement.value.trim() : '';
+
+    // Check if the user has entered some text before proceeding
+    if (panelId === 'beginning' && !userInput) {
+        alert('Please enter some text to generate the dialogue.');
+        return;
     }
+
+    let beginningDialogue = panelId !== 'beginning' ? document.querySelector('#beginning .dialogue')?.textContent : '';
+    let middleDialogue = panelId === 'end' ? document.querySelector('#middle .dialogue')?.textContent : '';
 
     const panel = document.getElementById(panelId);
-
-    let previousDialogues = {};
-    if (panelId === 'middle') {
-        previousDialogues.beginningDialogue = document.getElementById('userInput').value;
-    } else if (panelId === 'end') {
-        previousDialogues.beginningDialogue = document.getElementById('userInput').value;
-        previousDialogues.middleDialogue = document.getElementById('middleInput').value;
-    }
 
     try {
         const response = await fetch('/create-dialogue', {
@@ -51,8 +46,9 @@ async function generateDialogue(panelId) {
             },
             body: JSON.stringify({
                 panel: panelId,
-                content: userInput,
-                ...previousDialogues
+                beginningDialogue,
+                middleDialogue,
+                userInput // Include the user input in the request body
             }),
         });
 

@@ -16,29 +16,40 @@ app.use(express.static('public'));
 
 // Endpoint to create dialogue using the OpenAI GPT model
 app.post('/create-dialogue', async (req, res) => {
-  const { panel, content, beginningDialogue, middleDialogue } = req.body;
-  const prompt = `Create dialogue for the ${panel} of a comic strip: ${content}`;
-  let previousDialogues = [];
-  if (panel === 'middle') {
-    previousDialogues.push({ role: "system", content: beginningDialogue });
-  } else if (panel === 'end') {
-    previousDialogues.push({ role: "system", content: beginningDialogue });
-    previousDialogues.push({ role: "system", content: middleDialogue });
-  }
-  try {
-    const response = await openai.createChatCompletion({
-      model: "gpt-4",
-      messages: previousDialogues.concat([{
-        role: "user",
-        content: prompt
-      }]),
-      max_tokens: 150,
-    });
-    res.json({ dialogue: response.data.choices[0].message.content });
-  } catch (error) {
-    console.error('Error calling OpenAI:', error);
-    res.status(500).send('Error generating dialogue.');
-  }
+    const { panel, beginningDialogue, middleDialogue, userInput } = req.body;
+    let prompt = `Create a dialogue for a comic strip with two characters: Dragon Fruit and Avocado.`;
+    
+    if (beginningDialogue && (panel === "middle" || panel === "end")) {
+        prompt += ` It all started when ${beginningDialogue.split('\n')[0].replace('Dragon Fruit: ', '')}`;
+    }
+
+    if (middleDialogue && panel === "end") {
+        prompt += ` Then, something happened... ${middleDialogue.split('\n')[0].replace('Dragon Fruit: ', '')}`;
+    }
+
+    // Ensure that userInput fits naturally into the flow of the prompt
+    if (userInput) {
+        prompt += ` ${userInput}.`;
+    }
+    
+    // Ask the AI to continue based on the panel and user input
+    prompt += ` Now, what do Dragon Fruit and Avocado say next?`;
+
+    try {
+        const response = await openai.createCompletion({
+            model: "text-davinci-003", // Make sure to replace with the latest model if necessary
+            prompt: prompt,
+            max_tokens: 60,
+        });
+
+        let dialogues = response.data.choices[0].text.trim().split('\n').filter(line => line.trim() !== '');
+        let dialogue = dialogues.join('\n');
+
+        res.json({ dialogue });
+    } catch (error) {
+        console.error('Error calling OpenAI:', error);
+        res.status(500).send('Error generating dialogue.');
+    }
 });
 
 // Endpoint to generate images using DALL-E 3
