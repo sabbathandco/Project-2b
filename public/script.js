@@ -15,8 +15,8 @@ async function generateAndDisplayImage(panelId, dialogue) {
 
         const data = await response.json();
         const imageElement = document.getElementById(`${panelId}-image`);
-        // Displaying the image on the webpage
-        imageElement.innerHTML = `<img src="${data.imageUrl}" alt="Generated Image for ${panelId}" />`;
+        // Displaying the image on the webpage with a class 'generated-image'
+        imageElement.innerHTML = `<img src="${data.imageUrl}" alt="Generated Image for ${panelId}" class="generated-image"/>`;
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
     }
